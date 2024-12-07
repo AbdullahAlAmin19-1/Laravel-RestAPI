@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Log;
-use App\Models\User;
+use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function __construct()
+    private UserRepositoryInterface $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
     {
+        $this->userRepository = $userRepository;
+
         $this->middleware('permission:view user', ['only' => ['index', 'show', 'permissions']]);
         $this->middleware('permission:create user', ['only' => ['store', 'assignRole']]);
         $this->middleware('permission:update user', ['only' => ['update']]);
@@ -28,11 +29,11 @@ class UserController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-        ]);
+        if (isset($validated['password'])) {
+            $validated['password'] = bcrypt($validated['password']);
+        }
+
+        $user = $this->userRepository->createUser($validated);
 
         $user->syncRoles(['user']);
         $token = $user->createToken('access_token')->accessToken;
@@ -70,15 +71,8 @@ class UserController extends Controller
     //LogOut
     public function logOut()
     {
-
         if (Auth::guard('api')->check()) {
-            $accessToken = Auth::guard('api')->user()->token();
-
-            \DB::table('oauth_refresh_tokens')
-                ->where('access_token_id', $accessToken->id)
-                ->update(['revoked' => true]);
-            $accessToken->revoke();
-
+            $this->userRepository->logOut(Auth::guard('api')->user()->token());
             return Response(['message' => 'User logout successfully.'], 200);
         }
         return Response(['message' => 'Unauthorized'], 401);
@@ -87,16 +81,14 @@ class UserController extends Controller
     // List all users
     public function index()
     {
-        $users = User::all();
-        return response()->json($users);
+        return response()->json($this->userRepository->getAllUsers());
     }
 
     // Show a current user
     public function showDetails()
     {
         if (Auth::guard('api')->check()) {
-            $user = Auth::guard('api')->user();
-            return Response($user, 200);
+            return Response($this->userRepository->getUserDetails(), 200);
         }
         return Response(['message' => 'Unauthorized'], 401);
     }
@@ -104,13 +96,7 @@ class UserController extends Controller
     // Show a specific user
     public function show($id)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['error' => 'User Not Found'], 404);
-        }
-
-        return response()->json($user);
+        return response()->json($this->userRepository->getUserById($id));
     }
 
     // Create a new user
@@ -122,11 +108,11 @@ class UserController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-        ]);
+        if (isset($validated['password'])) {
+            $validated['password'] = bcrypt($validated['password']);
+        }
+
+        $user = $this->userRepository->createUser($validated);
 
         $user->syncRoles(['user']);
         return response()->json([
@@ -138,7 +124,7 @@ class UserController extends Controller
     // Update a user
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = $this->userRepository->getUserById($id);
 
         if (!$user) {
             return response()->json(['error' => 'User Not Found'], 404);
@@ -153,10 +139,10 @@ class UserController extends Controller
         if (isset($validated['password'])) {
             $validated['password'] = bcrypt($validated['password']);
         }
-        $user->update($validated);
+
+        $user = $this->userRepository->updateUser($id, $validated);
 
         return response()->json([
-            'user' => $user,
             'message' => 'User Updated Successfully'
         ], 202);
     }
@@ -164,13 +150,13 @@ class UserController extends Controller
     // Delete a user
     public function destroy($id)
     {
-        $user = User::find($id);
+        $user = $this->userRepository->getUserById($id);
 
         if (!$user) {
             return response()->json(['error' => 'User Not Found'], 404);
         }
 
-        $user->delete();
+        $this->userRepository->deleteUser($id);
 
         return response()->json(['message' => 'User Deleted Successfully']);
     }
@@ -178,16 +164,13 @@ class UserController extends Controller
     // Assign a role to a user
     public function assignRole(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = $this->userRepository->getUserById($id);
 
         if (!$user) {
             return response()->json(['error' => 'User Not Found'], 404);
         }
 
-        // foreach ($request->roles as $roleName) {
-        //     $role = Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'api']);
-        // }
-        $user->syncRoles($request->roles);
+        $this->userRepository->assignRole($id, $request->roles);
 
         return response()->json([
             'message' => 'Role Assigned Successfully'
@@ -197,14 +180,12 @@ class UserController extends Controller
     // Get a user's permissions
     public function permissions($id)
     {
-        $user = User::find($id);
+        $user = $this->userRepository->getUserById($id);
 
         if (!$user) {
             return response()->json(['error' => 'User Not Found'], 404);
         }
 
-        $permissions = $user->getAllPermissions();
-
-        return response()->json($permissions);
+        return response()->json($this->userRepository->showPermissions($id));
     }
 }
