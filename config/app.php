@@ -173,6 +173,7 @@ return [
 
         // Custome Providers
         Spatie\Permission\PermissionServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
     ])->toArray(),
 
     /*
