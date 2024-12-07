@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Log;
+use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Interfaces\UserRepositoryInterface;
 
 class UserController extends Controller
 {
