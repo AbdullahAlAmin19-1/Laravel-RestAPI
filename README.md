@@ -103,10 +103,22 @@ Access the application at `http://127.0.0.1:8000`.
 Run the following command to start the application:
 
 ```bash
+npm i vite
 npm run dev
 ```
 
 Access the application at `http://127.0.0.1:8000`.
+
+Log In Credentials
+
+-   Email:
+    ```bash
+    superadmin@gmail.com
+    ```
+-   Password:
+    ```bash
+    12345678
+    ```
 
 ---
 
