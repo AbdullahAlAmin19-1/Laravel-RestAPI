@@ -126,7 +126,7 @@ Log In Credentials
 
 ### **Import API Collection**
 
-1. Download the Postman collection from the repository or [click here](https://github.com/AbdullahAlAmin19-1/Role-Based-Access-Control-API/blob/master/Role-Based_Access_Control_API.postman_collection.json).
+1. Download the Postman collection from the repository or <a href="https://github.com/AbdullahAlAmin19-1/Role-Based-Access-Control-API/blob/master/Role-Based_Access_Control_API.postman_collection.json" target="_blank" download>Click Here</a>.
 2. Import the collection into Postman.
 
 ---
@@ -248,8 +248,11 @@ Log In Credentials
               "name": "Test User",
               "email": "testuser@example.com"
             },
-            {..},
-            {..}
+            {
+              "id": 2,
+              "name": "Test User 1",
+              "email": "testuser1@example.com"
+            }
         ]
         ```
 -   **Get User by ID**
@@ -379,7 +382,16 @@ Log In Credentials
                     "permission_id": 1
                 }
             },
-            {..},
-            {..}
+            {
+              "id": 2,
+                "name": "Create role",
+                "guard_name": "api",
+                "created_at": "2024-12-07T11:39:50.000000Z",
+                "updated_at": "2024-12-07T11:39:50.000000Z",
+                "pivot": {
+                    "role_id": 2,
+                    "permission_id": 2
+                }
+            }
         ]
         ```
