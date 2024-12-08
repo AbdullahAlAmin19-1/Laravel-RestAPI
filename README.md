@@ -1,66 +1,373 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# **Role-Based Access Control API**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## **Description**
 
-## About Laravel
+A comprehensive RESTful API for managing users, roles, and permissions, with an emphasis on scalability, security, and adherence to clean coding practices. The API leverages **Laravel Passport** for secure token-based authentication and middleware for implementing robust role and permission-based access control.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## **Features**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   **User Management**: Assign multiple roles and permissions to users.
+-   **Role Management**: Associate multiple permissions with a role.
+-   **Middleware Authorization**: Enforces role and permission-based access.
+-   **Secure Authentication**: Token-based authentication using Laravel Passport.
+-   **Scalable Design**: Built using the Repository Pattern for maintainability.
+-   **PSR Standards**: Ensures clean and consistent coding practices following PHP Standards Recommendations.
+-   **Role and Permission Management Web UI**: Role and Permission Create, Read, Update and Delete can be done using web UI.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## **Setup Instructions**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### **Step 1: Clone the Repository**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Navigate to the repository on GitHub.
+2. Download the project as a ZIP file or clone the repository:
+    ```bash
+    git clone https://github.com/AbdullahAlAmin19-1/Role-Based-Access-Control-API.git
+    ```
+3. Open the project folder in your terminal.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### **Step 2: Install Dependencies**
 
-### Premium Partners
+Run the following command to install all required dependencies:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+composer install --ignore-platform-req=ext-sodium
+```
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### **Step 3: Configure the Environment**
 
-## Code of Conduct
+1. Copy the `.env.example` file to `.env`:
+    - **Windows**:
+        ```bash
+        copy .env.example .env
+        ```
+    - **Ubuntu**:
+        ```bash
+        cp .env.example .env
+        ```
+2. Generate the application key:
+    ```bash
+    php artisan key:generate
+    ```
+3. Open the `.env` file and configure your database credentials (e.g., `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+### **Step 4: Set Up the Database**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Run the migrations to create the necessary tables:
 
-## License
+```bash
+php artisan migrate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Seed the database with sample data:
+
+```bash
+php artisan db:seed --class="UserRolePermissionSeeder"
+```
+
+---
+
+### **Step 5: Install Laravel Passport**
+
+Install Passport to enable token-based authentication:
+
+```bash
+php artisan passport:install
+```
+
+---
+
+### **Step 6: Start the Server**
+
+Run the following command to start the application:
+
+```bash
+php artisan serve
+```
+
+Access the application at `http://127.0.0.1:8000`.
+
+---
+
+### **Step 7: Run web UI**
+
+Run the following command to start the application:
+
+```bash
+npm run dev
+```
+
+Access the application at `http://127.0.0.1:8000`.
+
+---
+
+## **Postman Setup**
+
+### **Import API Collection**
+
+1. Download the Postman collection from the repository or [click here](https://github.com/AbdullahAlAmin19-1/Role-Based-Access-Control-API/blob/master/Role-Based_Access_Control_API.postman_collection.json).
+2. Import the collection into Postman.
+
+---
+
+### **Testing API Endpoints**
+
+#### **Authentication Endpoints**
+
+-   **Sign Up**
+
+    -   **Method**: `POST`
+    -   **Endpoint**: `/api/sign-up`
+    -   **Instructions**:
+        -   Go to the `SignUp` tab.
+        -   Provide the required data inside the body in raw JSON format and click `Send` to register a new user.
+        -   Copy the generated token from the response.
+    -   **Body**:
+        ```json
+        {
+            "name": "Test User",
+            "email": "testuser@example.com",
+            "password": "12345678",
+            "password_confirmation": "12345678"
+        }
+        ```
+    -   **Response**:
+        ```json
+        {
+            "token": "Token_Here",
+            "user": {
+                "name": "Test User",
+                "email": "testuser@example.com"
+            },
+            "message": "User Created Successfully"
+        }
+        ```
+
+-   **Log In**
+
+    -   **Method**: `POST`
+    -   **Endpoint**: `/api/login`
+    -   **Instructions**:
+        -   Go to the `LogIn` tab.
+        -   Provide valid credentials inside the body in raw JSON format and click `Send` to log in.
+        -   Copy the generated token from the response.
+    -   **Body**:
+        ```json
+        {
+            "email": "testuser@example.com",
+            "password": "12345678"
+        }
+        ```
+    -   **Response**:
+        ```json
+        {
+            "token": "Token_Here",
+            "user": {
+                "name": "Test User",
+                "email": "testuser@example.com"
+            },
+            "message": "Logged In Successfully"
+        }
+        ```
+
+-   **Authorization**
+    -   For endpoints requiring authentication, include the **Bearer Token** in the request headers.
+    -   Use the token generated during **Sign Up** or **Log In**.
+    -   **Instructions**:
+        -   Go to the `Role-Based Access Control API` tab.
+        -   Select `Authorization`, set the Auth Type to `Bearer Token`, and paste the copied token (Default).
+        -   Change the authorization of `SignUp` and `LogIn` tabs to `No Auth` as they don't require authorization (Optional).
+-   **Log Out**
+    -   **Method**: `GET`
+    -   **Endpoint**: `/api/logout`
+    -   **Instructions**:
+        -   Go to the `LogOut` tab.
+        -   Select `Authorization`, set the Auth Type to `Inherit auth from parent` (Default).
+        -   Click `Send` to update the user.
+    -   **Response**:
+        ```json
+        {
+            "message": "User logout successfully."
+        }
+        ```
+
+---
+
+#### **User Management Endpoints**
+
+-   **Get Current User Details**
+
+    -   **Method**: `GET`
+    -   **Endpoint**: `/api/user`
+    -   **Instructions**:
+        -   Go to the `User Details` tab.
+        -   Select `Authorization`, set the Auth Type to `Inherit auth from parent` (Default).
+        -   Click `Send` to get response.
+    -   **Response**:
+        ```json
+        {
+            "id": 1,
+            "name": "Test User",
+            "email": "testuser@example.com"
+        }
+        ```
+
+-   **Get All Users**
+    -   **Method**: `GET`
+    -   **Endpoint**: `/api/users`
+    -   **Instructions**:
+        -   Go to the `Users Details` tab.
+        -   Select `Authorization`, set the Auth Type to `Inherit auth from parent` (Default).
+        -   Click `Send` to get response.
+    -   **Response**:
+        ```json
+        [
+            {
+              "id": 1,
+              "name": "Test User",
+              "email": "testuser@example.com"
+            },
+            {..},
+            {..}
+        ]
+        ```
+-   **Get User by ID**
+
+    -   **Method**: `GET`
+    -   **Endpoint**: `/api/users/{id}`
+    -   **Instructions**:
+        -   Go to the `User Details By ID` tab.
+        -   Select `Authorization`, set the Auth Type to `Inherit auth from parent` (Default).
+        -   Provide a specific user ID at the end of the API for details and Click `Send` to get response.
+    -   **Response**:
+        ```json
+        {
+            "id": 1,
+            "name": "Test User",
+            "email": "testuser@example.com"
+        }
+        ```
+
+-   **Create User**
+
+    -   **Method**: `POST`
+    -   **Endpoint**: `/api/users`
+    -   **Instructions**:
+        -   Go to the `Create User` tab.
+        -   Select `Authorization`, set the Auth Type to `Inherit auth from parent` (Default).
+        -   Provide the required data inside the body in raw JSON format and click `Send` to create a new user.
+    -   **Body**:
+        ```json
+        {
+            "name": "New User",
+            "email": "newuser@example.com",
+            "password": "12345678",
+            "password_confirmation": "12345678"
+        }
+        ```
+    -   **Response**:
+        ```json
+        {
+            "user": {
+                "name": "New User",
+                "email": "newuser@example.com"
+            },
+            "message": "User Created Successfully"
+        }
+        ```
+
+-   **Update User**
+
+    -   **Method**: `PUT`
+    -   **Endpoint**: `/api/users/{id}`
+    -   **Instructions**:
+        -   Go to the `Update User` tab.
+        -   Select `Authorization`, set the Auth Type to `Inherit auth from parent` (Default).
+        -   Provide an ID of the user at the end of the API and required data inside the body in raw JSON format then click `Send` to update the user.
+    -   **Body**:
+        ```json
+        {
+            "name": "Updated User",
+            "email": "updateduser@example.com"
+        }
+        ```
+    -   **Response**:
+        ```json
+        {
+            "message": "User Updated Successfully"
+        }
+        ```
+
+-   **Delete User**
+    -   **Method**: `DELETE`
+    -   **Endpoint**: `/api/users/{id}`
+    -   **Instructions**:
+        -   Go to the `Delete User` tab.
+        -   Select `Authorization`, set the Auth Type to `Inherit auth from parent` (Default).
+        -   Provide an ID of the user you want to delete at the end of the API and Click `Send` to get response.
+    -   **Response**:
+        ```json
+        {
+            "message": "User Deleted Successfully"
+        }
+        ```
+
+---
+
+#### **Role Management Endpoints**
+
+-   **Assign Roles to a User**
+
+    -   **Method**: `POST`
+    -   **Endpoint**: `/api/users/{id}/assign-role`
+    -   **Instructions**:
+        -   Go to the `Assign Role` tab.
+        -   Select `Authorization`, set the Auth Type to `Inherit auth from parent` (Default).
+        -   Provide an ID of the user in the middle of 'users/' & '/assign-role' of the API and required data inside the body in raw JSON format then click `Send` to update the user.
+    -   **Body**:
+        ```json
+        {
+            "roles": ["admin", "staff"]
+        }
+        ```
+    -   **Response**:
+        ```json
+        {
+            "message": "Role Assigned Successfully"
+        }
+        ```
+
+-   **Get User Permissions**
+    -   **Method**: `GET`
+    -   **Endpoint**: `/api/users/{id}/permissions`
+    -   **Instructions**:
+        -   Go to the `Check User Permissions` tab.
+        -   Select `Authorization`, set the Auth Type to `Inherit auth from parent` (Default).
+        -   Provide an ID of the user in the middle of 'users/' & '/permissions' of the API and click `Send` to update the user.
+    -   **Response**:
+        ```json
+        [
+            {
+              "id": 1,
+                "name": "view role",
+                "guard_name": "api",
+                "created_at": "2024-12-07T11:39:50.000000Z",
+                "updated_at": "2024-12-07T11:39:50.000000Z",
+                "pivot": {
+                    "role_id": 1,
+                    "permission_id": 1
+                }
+            },
+            {..},
+            {..}
+        ]
+        ```
